@@ -1,0 +1,44 @@
+# ======================
+# Python / Virtual Env
+# ======================
+.venv/
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# ======================
+# Jupyter Notebook
+# ======================
+.ipynb_checkpoints/
+
+# ======================
+# Logs
+# ======================
+logs/
+*.log
+
+# ======================
+# dbt Artifacts (auto-generated)
+# ======================
+dbt/target/
+dbt/logs/
+dbt/manifest.json
+dbt/run_results.json
+dbt/packages/
+
+# ======================
+# Environment / Secrets
+# ======================
+.env
+*.env
+
+# Google Cloud service account (JANGAN pernah dipush)
+premier-league-analysis-*.json
+*.key.json
+
+# ======================
+# OS / Editor junk
+# ======================
+.DS_Store

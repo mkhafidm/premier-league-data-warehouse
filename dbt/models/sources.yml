@@ -1,0 +1,42 @@
+version: 2
+
+sources:
+  - name: fpl_raw_data
+    database: premier-league-analysis
+    schema: fpl_data
+    tables:
+      - name: raw_static_players
+        loaded_at_field: extraction_timestamp
+        freshness:
+          warn_after: {count: 6, period: hour}
+          error_after: {count: 24, period: hour}
+
+      - name: raw_static_teams
+        loaded_at_field: extraction_timestamp
+        freshness:
+          warn_after: {count: 6, period: hour}
+          error_after: {count: 24, period: hour}
+
+      - name: raw_static_positions
+        loaded_at_field: extraction_timestamp
+        freshness:
+          warn_after: {count: 6, period: hour}
+          error_after: {count: 24, period: hour}
+
+      - name: raw_static_gameweeks
+        loaded_at_field: extraction_timestamp
+        freshness:
+          warn_after: {count: 6, period: hour}
+          error_after: {count: 24, period: hour}
+
+      - name: raw_fixtures
+        loaded_at_field: extraction_timestamp
+        freshness:
+          warn_after: {count: 6, period: hour}
+          error_after: {count: 24, period: hour}
+
+      - name: raw_weekly_stats
+        loaded_at_field: extraction_timestamp
+        freshness:
+          warn_after: {count: 6, period: hour}
+          error_after: {count: 24, period: hour}
