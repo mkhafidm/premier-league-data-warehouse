@@ -1,0 +1,71 @@
+premier-league-data-warehouse  main via  v3.13.7 (.venv) ❯ git status
+On branch main
+Your branch is up to date with 'origin/main'.
+
+nothing to commit, working tree clean
+
+premier-league-data-warehouse  main via  v3.13.7 (.venv) ❯ cat ~/.github/workflows/main.yml
+name: FPL ETL + dbt Pipeline
+
+on:
+  schedule:
+    - cron: "0 23 * * *"   # Run daily at 06:00 WIB (23:00 UTC)
+  workflow_dispatch:        # Allow manual run
+
+jobs:
+  run-pipeline:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v3
+
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.10"
+
+    - name: Install Python dependencies
+      run: |
+        pip install -r requirements.txt
+
+    - name: Setup GCP credentials 🔑
+      run: |
+        # Menggunakan 'echo' dengan kutip tunggal ('...') untuk menulis JSON multi-line
+        # (termasuk karakter newline di private_key) langsung ke file.
+        echo '${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}' > $GITHUB_WORKSPACE/key.json
+
+        # Menetapkan lokasi file sebagai variabel lingkungan agar Google libraries dapat menemukannya
+        echo "GOOGLE_APPLICATION_CREDENTIALS=$GITHUB_WORKSPACE/key.json" >> $GITHUB_ENV
+
+    - name: Run ETL (Extract + Load)
+      run: |
+        python etl/extract_load.py
+
+    - name: Setup dbt
+      run: |
+        pip install dbt-bigquery
+
+    - name: Configure dbt profiles.yml
+      run: |
+        # 1. Buat folder default dbt di home directory (jika belum ada)
+        mkdir -p ~/.dbt
+
+        # 2. Tulis konten secret DBT_PROFILES ke file profiles.yml di lokasi default
+        echo "${{ secrets.DBT_PROFILES }}" > ~/.dbt/profiles.yml
+
+        # 3. KARENA KITA MENGGUNAKAN JALUR keyfile: key.json DI PROFILES.YML,
+        # KITA PERLU MENYALIN key.json KE LOKASI ~/.dbt JUGA AGAR DBT BISA MENEMUKANNYA.
+        # cp $GITHUB_WORKSPACE/key.json ~/.dbt/key.json
+        if [ -f "$GITHUB_WORKSPACE/key.json" ]; then
+            echo "SUCCESS: key.json is present in the workspace."
+        else
+            echo "ERROR: key.json is missing in the workspace. Check 'Setup GCP credentials' step."
+        fi
+
+    - name: Run dbt models
+      working-directory: ./dbt
+      run: |
+        dbt deps
+        dbt run
+        dbt test
