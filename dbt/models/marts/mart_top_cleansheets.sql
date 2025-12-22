@@ -3,6 +3,7 @@
 with ws as (
     select *
     from {{ ref('fact_weekly_stats') }}
+    -- where season = '2024/2025'
 ),
 
 p as (

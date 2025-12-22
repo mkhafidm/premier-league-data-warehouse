@@ -3,7 +3,8 @@
 with ws as (
     select
         w.player_id,
-        p.team_id,
+        w.team_id,
+        -- p.team_id,
         w.goals,
         w.assists,
         w.xg,

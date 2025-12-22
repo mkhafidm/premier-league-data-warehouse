@@ -65,7 +65,7 @@ joined as (
         a.total_goals,
         a.total_assists,
         a.total_clean_sheets,
-        a.total_goals_conceded
+        a.total_goals_conceded,
         a.total_saves,
         a.total_bonus,
         a.total_bps,
