@@ -1,0 +1,17 @@
+# ETL dependencies
+pandas
+requests
+
+# Google Cloud / BigQuery
+google-cloud-bigquery
+google-cloud-core
+google-auth
+google-auth-oauthlib
+google-auth-httplib2
+
+# dbt BigQuery
+dbt-bigquery==1.10.3
+
+# Utility packages (recommended for stability)
+pyarrow        # For better BigQuery data handling
+protobuf       # Avoid version mismatch in BigQuery client
