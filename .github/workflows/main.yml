@@ -1,10 +1,3 @@
-premier-league-data-warehouse  main via  v3.13.7 (.venv) ❯ git status
-On branch main
-Your branch is up to date with 'origin/main'.
-
-nothing to commit, working tree clean
-
-premier-league-data-warehouse  main via  v3.13.7 (.venv) ❯ cat ~/.github/workflows/main.yml
 name: FPL ETL + dbt Pipeline
 
 on:
