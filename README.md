@@ -12,7 +12,7 @@ This project is built using modern cloud data stack principles:
 * **Python:** Used for the **ETL** script (fetching raw data from the FPL API and loading it into BigQuery).
 * **Google BigQuery:** Serves as the scalable and serverless **Data Warehouse**.
 * **dbt (Data Build Tool):** Manages the entire **Transformation (T)** phase, handling all SQL logic (staging $\rightarrow$ dimension $\rightarrow$ fact $\rightarrow$ mart).
-* **Looker Studio / Power BI:** Used for data visualization and building the final analytical dashboards.
+* **Power BI:** Used for data visualization and building the final analytical dashboards.
 * **GitHub:** Used for Version Control and slated for future **CI/CD** automation (via GitHub Actions).
 
 ---
@@ -23,18 +23,26 @@ The structure logically separates the data acquisition (ETL) and the data modeli
 
 ```bash
 premier-league-dwh/
-├── dbt/                          # Main dbt project folder (fpl_dwh)
+│
+├── etl/                          # Extract & Load (Python)
+│   └── extract_load.py
+│
+├── dbt/                          # dbt project (Transform)
 │   ├── models/
-│   │   ├── staging/              # Layer 1: Cleans raw BigQuery tables
-│   │   ├── dimensions/           # Layer 2: Dimension tables (dim_player, dim_team, etc.)
-│   │   ├── facts/                # Layer 2: Fact tables (fact_fixtures, fact_weekly_stats)
-│   │   └── marts/                # Layer 3: Final analytical tables (e.g., mart_team_summary)
-│   └── dbt_project.yml
+│   │   ├── staging/          
+│   │   ├── dimensions/         
+│   │   ├── facts/               
+│   │   └── marts/               
+│   ├── dbt_project.yml
+│   └── packages.yml
 │
-├── etl/                          # Python Extract & Load scripts
-│   └── extract_load.py           # Executes the E & L process
+├── dashboards/                   # BI & analytics outputs
 │
-├── requirements.txt              # Python dependencies
+├── .github/
+│   └── workflows/
+│       └── main.yml           
+│
+├── requirements.txt
 ├── README.md
 └── .gitignore
 
